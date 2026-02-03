@@ -1,0 +1,187 @@
+import tkinter as tklib
+from tkinter import ttk, messagebox
+
+# ---------------- LOGIN WINDOW ---------------- #
+def login_window():
+    login = tklib.Tk()
+    login.title("Studenr Registration & Payment Management System for i-soft Training Institute")
+    login.geometry("400x400")
+
+    l1=tklib.Label(login, text="Username:")
+    l1.grid(row=0, column=0, padx=10, pady=10)
+    e1 = tklib.Entry(login)
+    e1.grid(row=0, column=1)
+
+    l2=tklib.Label(login, text="Password:")
+    l2.grid(row=1, column=0, padx=10, pady=10)
+    e2 = tklib.Entry(login, show="*")
+    e2.grid(row=1, column=1)
+
+    def check_login():
+        if e1.get() == "admin" and e2.get() == "1234":
+            messagebox.showinfo("Login", "Login Successful!")
+            login.destroy()
+            registration_window()
+        else:
+            messagebox.showerror("Error", "Invalid Username or Password")
+
+    def exit_app():
+        login.destroy()
+
+    b1=tklib.Button(login, text="Login", command=check_login)
+    b1.grid(row=2, column=0, pady=20)
+    b2=tklib.Button(login, text="Exit", command=exit_app)
+    b2.grid(row=2, column=1, pady=20)
+
+    login.mainloop()
+
+# ---------------- REGISTRATION WINDOW ---------------- #
+def registration_window():
+    reg = tklib.Tk()
+    reg.title("Registration Form")
+    reg.geometry("500x700")
+    lb=tklib.Label(reg,text="!!!Personal Details!!!",bg="pink",font=("Arial",20,"bold"))
+    lb.grid(row=0,column=0)
+    name=tklib.Label(reg, text="Student Name:")
+    name.grid(row=1, column=0, padx=10, pady=5, sticky="w")
+    ename = tklib.Entry(reg)
+    ename.grid(row=1, column=1)
+
+    age=tklib.Label(reg, text="Age:")
+    age.grid(row=2, column=0, padx=10, pady=5, sticky="w")
+    eage = tklib.Entry(reg)
+    eage.grid(row=2, column=1)
+
+    gender=tklib.Label(reg, text="Gender:")
+    gender.grid(row=3, column=0, padx=10, pady=5, sticky="w")
+    gender_var=tklib.StringVar(value="Male")
+    tklib.Radiobutton(reg, text="Male", variable=gender_var, value="Male").grid(row=3, column=1, sticky="w")
+    tklib.Radiobutton(reg, text="Female", variable=gender_var, value="Female").grid(row=3, column=1)
+    tklib.Radiobutton(reg, text="Other", variable=gender_var, value="Other").grid(row=3, column=1, sticky="e")
+
+    cl=tklib.Label(reg, text="Class/Grade:")
+    cl.grid(row=4, column=0, padx=10, pady=5, sticky="w")
+    class_var = tklib.StringVar()
+    dropdown = ttk.Combobox(reg, textvariable=class_var)
+    dropdown['values'] = ["8th", "9th", "10th", "11th", "12th","1st year","2nd year","3rd year","4th year"]
+    dropdown.grid(row=4, column=1)
+    address=tklib.Label(reg,text="Address:")
+    address.grid(row=5,column=0, padx=10, pady=5, sticky="w")
+    eaddress=tklib.Entry(reg)
+    eaddress.grid(row=5,column=1)
+    contact=tklib.Label(reg, text="Contact Number:")
+    contact.grid(row=6, column=0, padx=10, pady=5, sticky="w")
+    econtact = tklib.Entry(reg)
+    econtact.grid(row=6, column=1)
+    email=tklib.Label(reg, text="E-mail:")
+    email.grid(row=7, column=0, padx=10, pady=5, sticky="w")
+    eemail = tklib.Entry(reg)
+    eemail.grid(row=7, column=1)
+
+    lb1=tklib.Label(reg,text="!!!Academic Details!!!",bg="yellow",font=("Arial",20,"bold"))
+    lb1.grid(row=8,column=0)
+    college=tklib.Label(reg, text="College Name:")
+    college.grid(row=9, column=0, padx=10, pady=5, sticky="w")
+    ecollege = tklib.Entry(reg)
+    ecollege.grid(row=9, column=1)
+    cour=tklib.Label(reg, text="Course:")
+    cour.grid(row=10, column=0, padx=10, pady=5, sticky="w")
+    course_var = tklib.StringVar()
+    dropdown = ttk.Combobox(reg, textvariable=course_var)
+    dropdown['values'] = ["BCA", "Bsc", "B-tech", "Other"]
+    dropdown.grid(row=10, column=1)
+    year=tklib.Label(reg, text="Year/Semester:")
+    year.grid(row=11, column=0, padx=10, pady=5, sticky="w")
+    year_var = tklib.StringVar()
+    dropdown = ttk.Combobox(reg, textvariable=year_var)
+    dropdown['values'] = ["1st year(1st and 2nd sem)", "2nd year(3rd and 4th sem)", "3rdyear(5th and 6th sem)", "4thyear(7th and 8th sem)"]
+    dropdown.grid(row=11, column=1)
+    selection=tklib.Label(reg, text="Course Interested:")
+    selection.grid(row=12, column=0, padx=10, pady=5, sticky="w")
+    selection_var = tklib.StringVar()
+    dropdown = ttk.Combobox(reg, textvariable=selection_var)
+    dropdown['values'] = ["Python", "Java", "Web Dev", "Data Science"]
+    dropdown.grid(row=12, column=1)
+
+
+    # Go to Payment Window
+    def go_next():
+        student_data = {
+            "name": ename.get(),
+            "age": eage.get(),
+            "gender":gender_var.get(),
+            "class": class_var.get(),
+            "address":eaddress.get(),
+            "contact":econtact.get(),
+            "email":eemail.get(),
+            "college":ecollege.get(),
+            "course":course_var.get(),
+            "year":year_var.get(),
+            "selection":selection_var.get(),
+            "contact": econtact.get()
+        }
+
+        if not all(student_data.values()):
+            messagebox.showwarning("Warning", "Please fill all details!")
+            return
+        reg.destroy()
+        payment_window(student_data)
+
+    b3=tklib.Button(reg, text="Next", command=go_next)
+    b3.grid(row=13, column=0, pady=20)
+    b4=tklib.Button(reg, text="Back", command=lambda: [reg.destroy(), login_window()])
+    b4.grid(row=13, column=1)
+    
+
+    reg.mainloop()
+
+# ---------------- PAYMENT WINDOW ---------------- #
+def payment_window(student_data):
+    pay = tklib.Tk()
+    pay.title("Payment Details")
+    pay.geometry("400x700")
+    n=tklib.Label(pay,text=f"Student:{student_data['name']}({student_data['course']})")
+    n.grid(row=0,column=0,padx=10,pady=5)              
+    p=tklib.Label(pay, text="Payment Mode:")
+    p.grid(row=1,column=0)
+    mode_var = tklib.StringVar(value="Cash")
+    r4=tklib.Radiobutton(pay, text="Cash", variable=mode_var, value="Cash")
+    r4.grid(row=1,column=1)
+    r5=tklib.Radiobutton(pay, text="UPI", variable=mode_var, value="UPI")
+    r5.grid(row=1,column=2,pady=5,padx=10)
+    r6=tklib.Radiobutton(pay, text="Card", variable=mode_var, value="Card")
+    r6.grid(row=1,column=3,pady=5,padx=10)
+
+    amt=tklib.Label(pay,text="Amount:")
+    amt.grid(row=3,column=0,pady=5,padx=10,sticky="w")
+    eamount = tklib.Entry(pay)
+    eamount.grid(row=3, column=1, padx=10, pady=5, sticky="w")
+    
+
+    def save_data():
+        amount = eamount.get()
+        if not amount.isdigit():
+            messagebox.showwarning("Warning", "Enter a valid amount!")
+            return
+
+        with open("student_data.csv", "a") as f:
+            f.write(f"{student_data['name']}\t{student_data['age']}\t{student_data['gender']}\t"
+                    f"{student_data['class']}\t{student_data['address']}\t{student_data['contact']}\t"
+                    f"{student_data['email']}\t{student_data['college']}\t{student_data['course']}\t{student_data['course']}\t{student_data['year']}\t{student_data['selection']}\t{mode_var.get()}\t{amount}\n")
+
+        messagebox.showinfo("Success", "Data saved successfully!")
+        pay.destroy()
+        login_window()
+
+    submit1=tklib.Button(pay, text="Submit", command=save_data)
+    submit1.grid(row=4,column=0,pady=10)
+    b6=tklib.Button(pay, text="Back", command=lambda: [pay.destroy(), registration_window()])
+    b6.grid(row=5,column=0,pady=10)
+    b7=tklib.Button(pay, text="Exit", command=pay.destroy)
+    b7.grid(row=5,column=1,pady=10)
+
+    pay.mainloop()
+
+# Start the program
+login_window()
+
